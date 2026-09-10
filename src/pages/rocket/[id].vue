@@ -13,7 +13,7 @@
       Back to Rocket List
     </v-btn>
 
-    <!-- Loading State -->
+    <!-- 1. Loading State -->
     <div
       v-if="store.isDetailLoading"
       class="py-6"
@@ -25,37 +25,15 @@
       />
     </div>
 
-    <!-- Error State with Retry -->
-    <v-alert
+    <!-- 2. Error State with Retry -->
+    <StateError
       v-else-if="store.detailError"
-      type="error"
-      variant="tonal"
-      class="pa-4 my-4"
-      rounded="lg"
-      prominent
-    >
-      <div class="d-flex flex-column flex-sm-row align-sm-center justify-space-between">
-        <div>
-          <h3 class="text-h6 font-weight-bold">
-            Error loading rocket detail
-          </h3>
-          <p class="mb-0 text-body-2">
-            {{ store.detailError }}
-          </p>
-        </div>
-        <v-btn
-          color="error"
-          variant="elevated"
-          prepend-icon="mdi-refresh"
-          class="mt-3 mt-sm-0 align-self-start align-self-sm-center"
-          @click="loadData"
-        >
-          Retry
-        </v-btn>
-      </div>
-    </v-alert>
+      title="Error loading rocket detail"
+      :message="store.detailError"
+      @retry="loadData"
+    />
 
-    <!-- Detail Content -->
+    <!-- 3. Detail Content (Success State) -->
     <v-card
       v-else-if="rocket"
       elevation="3"
@@ -64,7 +42,7 @@
     >
       <!-- Hero Image -->
       <v-img
-        :src="rocket.image_url || defaultPlaceholder"
+        :src="rocket.image_url || DEFAULT_PLACEHOLDER_IMAGE"
         height="400"
         cover
         class="bg-grey-lighten-2 align-end"
@@ -79,7 +57,7 @@
         </template>
         <template #error>
           <v-img
-            :src="defaultPlaceholder"
+            :src="DEFAULT_PLACEHOLDER_IMAGE"
             height="100%"
             width="100%"
             cover
@@ -113,7 +91,7 @@
       </v-img>
 
       <v-card-text class="pa-6">
-        <!-- Key Specifications Grid -->
+        <!-- Key Specifications Metric Cards -->
         <h2 class="text-h6 font-weight-bold mb-4 d-flex align-center">
           <v-icon
             icon="mdi-information-outline"
@@ -123,76 +101,11 @@
           Rocket Specifications
         </h2>
 
-        <v-row class="mb-6">
-          <v-col
-            cols="12"
-            sm="4"
-          >
-            <v-card
-              variant="tonal"
-              color="primary"
-              class="pa-4 text-center rounded-lg"
-            >
-              <v-icon
-                icon="mdi-currency-usd"
-                size="32"
-                class="mb-1"
-              />
-              <div class="text-caption text-medium-emphasis">
-                Cost Per Launch
-              </div>
-              <div class="text-h6 font-weight-bold mt-1">
-                {{ formatCost(rocket.launch_cost) }}
-              </div>
-            </v-card>
-          </v-col>
-
-          <v-col
-            cols="12"
-            sm="4"
-          >
-            <v-card
-              variant="tonal"
-              color="info"
-              class="pa-4 text-center rounded-lg"
-            >
-              <v-icon
-                icon="mdi-flag-outline"
-                size="32"
-                class="mb-1"
-              />
-              <div class="text-caption text-medium-emphasis">
-                Country
-              </div>
-              <div class="text-h6 font-weight-bold mt-1">
-                {{ rocket.manufacturer?.country_code || 'N/A' }}
-              </div>
-            </v-card>
-          </v-col>
-
-          <v-col
-            cols="12"
-            sm="4"
-          >
-            <v-card
-              variant="tonal"
-              color="secondary"
-              class="pa-4 text-center rounded-lg"
-            >
-              <v-icon
-                icon="mdi-calendar-start"
-                size="32"
-                class="mb-1"
-              />
-              <div class="text-caption text-medium-emphasis">
-                First Flight
-              </div>
-              <div class="text-h6 font-weight-bold mt-1">
-                {{ formatDate(rocket.maiden_flight) }}
-              </div>
-            </v-card>
-          </v-col>
-        </v-row>
+        <RocketSpecsCard
+          :launch-cost="rocket.launch_cost"
+          :country-code="rocket.manufacturer?.country_code"
+          :maiden-flight="rocket.maiden_flight"
+        />
 
         <v-divider class="my-4" />
 
@@ -210,71 +123,19 @@
         </p>
 
         <!-- Extra Technical Info Table -->
-        <v-table class="mt-6 border rounded-lg">
-          <thead>
-            <tr>
-              <th class="text-left font-weight-bold">
-                Field
-              </th>
-              <th class="text-left font-weight-bold">
-                Value
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-medium-emphasis">
-                Rocket Name
-              </td>
-              <td class="font-weight-medium">
-                {{ rocket.full_name || 'N/A' }}
-              </td>
-            </tr>
-            <tr>
-              <td class="text-medium-emphasis">
-                Manufacturer
-              </td>
-              <td>{{ rocket.manufacturer?.name || 'SpaceX' }}</td>
-            </tr>
-            <tr>
-              <td class="text-medium-emphasis">
-                Cost per Launch
-              </td>
-              <td>{{ formatCost(rocket.launch_cost) }}</td>
-            </tr>
-            <tr>
-              <td class="text-medium-emphasis">
-                Country of Origin
-              </td>
-              <td>{{ rocket.manufacturer?.country_code || 'N/A' }}</td>
-            </tr>
-            <tr>
-              <td class="text-medium-emphasis">
-                Maiden Flight
-              </td>
-              <td>{{ formatDate(rocket.maiden_flight) }}</td>
-            </tr>
-          </tbody>
-        </v-table>
+        <RocketSpecsTable :rocket="rocket" />
       </v-card-text>
     </v-card>
 
     <!-- Fallback if not found -->
-    <v-empty-state
+    <StateEmpty
       v-else
       icon="mdi-alert-circle-outline"
       title="Rocket Not Found"
       text="We could not find the rocket you were looking for."
-    >
-      <template #actions>
-        <v-btn
-          color="primary"
-          to="/"
-        >
-          Back to Rocket List
-        </v-btn>
-      </template>
-    </v-empty-state>
+      action-text="Back to Rocket List"
+      @action="$router.push('/')"
+    />
   </v-container>
 </template>
 
@@ -282,14 +143,17 @@
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRocketStore } from '@/stores/rocket'
+import { DEFAULT_PLACEHOLDER_IMAGE } from '@/utils/formatters'
+import StateError from '@/components/common/StateError.vue'
+import StateEmpty from '@/components/common/StateEmpty.vue'
+import RocketSpecsCard from '@/components/rocket/RocketSpecsCard.vue'
+import RocketSpecsTable from '@/components/rocket/RocketSpecsTable.vue'
 
 const route = useRoute()
 const store = useRocketStore()
 
-const defaultPlaceholder = '/images/placeholders/rocket-placeholder.svg'
-
 const rocketId = computed(() => {
-  const param = route.params.id
+  const param = 'id' in route.params ? route.params.id : undefined
   return Array.isArray(param) ? param[0] : param
 })
 
@@ -304,32 +168,6 @@ function loadData() {
 onMounted(() => {
   loadData()
 })
-
-function formatCost(cost: string | number | null | undefined): string {
-  if (cost === null || cost === undefined || cost === '') return 'N/A'
-  const numeric = Number(cost)
-  if (isNaN(numeric)) return String(cost)
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  }).format(numeric)
-}
-
-function formatDate(dateStr: string | null | undefined): string {
-  if (!dateStr) return 'N/A'
-  try {
-    const d = new Date(dateStr)
-    if (isNaN(d.getTime())) return dateStr
-    return d.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    })
-  } catch {
-    return dateStr
-  }
-}
 </script>
 
 <style scoped>

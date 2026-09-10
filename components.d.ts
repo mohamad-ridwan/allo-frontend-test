@@ -7,8 +7,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
+    AddRocketDialog: typeof import('./src/components/rocket/AddRocketDialog.vue')['default']
+    RocketCard: typeof import('./src/components/rocket/RocketCard.vue')['default']
+    RocketFilter: typeof import('./src/components/rocket/RocketFilter.vue')['default']
+    RocketSpecsCard: typeof import('./src/components/rocket/RocketSpecsCard.vue')['default']
+    RocketSpecsTable: typeof import('./src/components/rocket/RocketSpecsTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StateEmpty: typeof import('./src/components/common/StateEmpty.vue')['default']
+    StateError: typeof import('./src/components/common/StateError.vue')['default']
   }
 }
