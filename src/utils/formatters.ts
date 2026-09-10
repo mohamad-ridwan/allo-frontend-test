@@ -1,4 +1,6 @@
-export const DEFAULT_PLACEHOLDER_IMAGE = '/images/placeholders/rocket-placeholder.svg'
+import rocketPlaceholder from '@/assets/images/placeholders/rocket-placeholder.svg'
+
+export const DEFAULT_PLACEHOLDER_IMAGE = rocketPlaceholder
 
 export function formatCost(cost: string | number | null | undefined): string {
   if (cost === null || cost === undefined || cost === '') return 'N/A'
