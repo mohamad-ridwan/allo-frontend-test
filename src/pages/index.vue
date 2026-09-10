@@ -1,10 +1,23 @@
 <template>
-  <v-container class="py-8" max-width="1200">
+  <v-container
+    class="py-8"
+    max-width="1200"
+  >
     <!-- Header -->
-    <v-row align="center" class="mb-6">
-      <v-col cols="12" md="7">
+    <v-row
+      align="center"
+      class="mb-6"
+    >
+      <v-col
+        cols="12"
+        md="7"
+      >
         <h1 class="text-h4 font-weight-bold d-flex align-center gap-2">
-          <v-icon color="primary" icon="mdi-rocket-launch" class="mr-2" />
+          <v-icon
+            color="primary"
+            icon="mdi-rocket-launch"
+            class="mr-2"
+          />
           SpaceX Rockets
         </h1>
         <p class="text-subtitle-1 text-medium-emphasis mt-1">
@@ -12,30 +25,72 @@
         </p>
       </v-col>
 
-      <v-col cols="12" md="5" class="d-flex justify-md-end gap-2">
-        <v-btn color="primary" prepend-icon="mdi-plus" size="large" elevation="2" @click="showAddDialog = true">
+      <v-col
+        cols="12"
+        md="5"
+        class="d-flex justify-md-end gap-2"
+      >
+        <v-btn
+          color="primary"
+          prepend-icon="mdi-plus"
+          size="large"
+          elevation="2"
+          @click="showAddDialog = true"
+        >
           Add Rocket
         </v-btn>
       </v-col>
     </v-row>
 
     <!-- Search / Filter Bar -->
-    <v-card class="mb-6 pa-2" elevation="1" rounded="lg">
-      <v-text-field v-model="store.filterQuery" placeholder="Filter rockets by name or description..."
-        prepend-inner-icon="mdi-magnify" clearable variant="solo-filled" flat hide-details density="comfortable" />
+    <v-card
+      class="mb-6 pa-2"
+      elevation="1"
+      rounded="lg"
+    >
+      <v-text-field
+        v-model="store.filterQuery"
+        placeholder="Filter rockets by name or description..."
+        prepend-inner-icon="mdi-magnify"
+        clearable
+        variant="solo-filled"
+        flat
+        hide-details
+        density="comfortable"
+      />
     </v-card>
 
     <!-- Loading State -->
-    <div v-if="store.isLoading" class="py-8">
+    <div
+      v-if="store.isLoading"
+      class="py-8"
+    >
       <v-row>
-        <v-col v-for="n in 6" :key="n" cols="12" sm="6" md="4">
-          <v-skeleton-loader type="image, article, actions" elevation="2" rounded="lg" />
+        <v-col
+          v-for="n in 6"
+          :key="n"
+          cols="12"
+          sm="6"
+          md="4"
+        >
+          <v-skeleton-loader
+            type="image, article, actions"
+            elevation="2"
+            rounded="lg"
+          />
         </v-col>
       </v-row>
     </div>
 
     <!-- Error State with Retry Button -->
-    <v-alert v-else-if="store.error" type="error" variant="tonal" class="mb-6 pa-4" rounded="lg" prominent>
+    <v-alert
+      v-else-if="store.error"
+      type="error"
+      variant="tonal"
+      class="mb-6 pa-4"
+      rounded="lg"
+      prominent
+    >
       <div class="d-flex flex-column flex-sm-row align-sm-center justify-space-between">
         <div>
           <h3 class="text-h6 font-weight-bold">
@@ -45,8 +100,13 @@
             {{ store.error }}
           </p>
         </div>
-        <v-btn color="error" variant="elevated" prepend-icon="mdi-refresh"
-          class="mt-3 mt-sm-0 align-self-start align-self-sm-center" @click="store.fetchRockets">
+        <v-btn
+          color="error"
+          variant="elevated"
+          prepend-icon="mdi-refresh"
+          class="mt-3 mt-sm-0 align-self-start align-self-sm-center"
+          @click="store.fetchRockets"
+        >
           Retry
         </v-btn>
       </div>
@@ -55,21 +115,53 @@
     <!-- Rocket Grid (Success State) -->
     <div v-else>
       <v-row v-if="store.filteredRockets.length > 0">
-        <v-col v-for="rocket in store.filteredRockets" :key="rocket.id" cols="12" sm="6" md="4">
-          <v-card hover elevation="2" rounded="lg" class="d-flex flex-column h-100 rocket-card"
-            :to="`/rocket/${rocket.id}`">
+        <v-col
+          v-for="rocket in store.filteredRockets"
+          :key="rocket.id"
+          cols="12"
+          sm="6"
+          md="4"
+        >
+          <v-card
+            hover
+            elevation="2"
+            rounded="lg"
+            class="d-flex flex-column h-100 rocket-card"
+            :to="`/rocket/${rocket.id}`"
+          >
             <!-- Image with fallback -->
-            <v-img :src="rocket.image_url || defaultPlaceholder" height="200" cover class="bg-grey-lighten-2">
+            <v-img
+              :src="rocket.image_url || defaultPlaceholder"
+              height="200"
+              cover
+              class="bg-grey-lighten-2"
+            >
               <template #placeholder>
                 <div class="d-flex align-center justify-center fill-height">
-                  <v-progress-circular indeterminate color="primary" />
+                  <v-progress-circular
+                    indeterminate
+                    color="primary"
+                  />
                 </div>
               </template>
               <template #error>
-                <v-img :src="defaultPlaceholder" height="100%" width="100%" cover class="fill-height" />
+                <v-img
+                  :src="defaultPlaceholder"
+                  height="100%"
+                  width="100%"
+                  cover
+                  class="fill-height"
+                />
               </template>
-              <div v-if="rocket.isLocal" class="pa-2">
-                <v-chip color="success" size="small" variant="elevated">
+              <div
+                v-if="rocket.isLocal"
+                class="pa-2"
+              >
+                <v-chip
+                  color="success"
+                  size="small"
+                  variant="elevated"
+                >
                   Local
                 </v-chip>
               </div>
@@ -94,7 +186,12 @@
                 {{ rocket.manufacturer?.country_code || 'Country: N/A' }}
               </span>
               <v-spacer />
-              <v-btn color="primary" variant="text" append-icon="mdi-arrow-right" size="small">
+              <v-btn
+                color="primary"
+                variant="text"
+                append-icon="mdi-arrow-right"
+                size="small"
+              >
                 Detail
               </v-btn>
             </v-card-actions>
@@ -103,10 +200,18 @@
       </v-row>
 
       <!-- Empty Filter Result -->
-      <v-empty-state v-else icon="mdi-rocket-outline" title="No rockets found"
-        :text="`No results found matching &quot;${store.filterQuery}&quot;`">
+      <v-empty-state
+        v-else
+        icon="mdi-rocket-outline"
+        title="No rockets found"
+        :text="`No results found matching &quot;${store.filterQuery}&quot;`"
+      >
         <template #actions>
-          <v-btn color="primary" variant="tonal" @click="store.filterQuery = ''">
+          <v-btn
+            color="primary"
+            variant="tonal"
+            @click="store.filterQuery = ''"
+          >
             Clear Filter
           </v-btn>
         </template>
@@ -114,49 +219,111 @@
     </div>
 
     <!-- Add Rocket Dialog -->
-    <v-dialog v-model="showAddDialog" max-width="600" persistent>
+    <v-dialog
+      v-model="showAddDialog"
+      max-width="600"
+      persistent
+    >
       <v-card rounded="lg">
-        <v-toolbar color="primary" density="comfortable">
+        <v-toolbar
+          color="primary"
+          density="comfortable"
+        >
           <v-toolbar-title class="font-weight-bold">
             Add New Rocket (Local)
           </v-toolbar-title>
-          <v-btn icon="mdi-close" variant="text" @click="showAddDialog = false" />
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            @click="showAddDialog = false"
+          />
         </v-toolbar>
 
-        <v-form ref="formRef" v-model="isFormValid" @submit.prevent="handleSubmit">
+        <v-form
+          ref="formRef"
+          v-model="isFormValid"
+          @submit.prevent="handleSubmit"
+        >
           <v-card-text class="pt-4">
-            <v-text-field v-model="newRocket.full_name" label="Rocket Name *"
-              :rules="[v => !!v || 'Rocket name is required']" variant="outlined" density="comfortable" class="mb-2" />
+            <v-text-field
+              v-model="newRocket.full_name"
+              label="Rocket Name *"
+              :rules="[v => !!v || 'Rocket name is required']"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+            />
 
-            <v-textarea v-model="newRocket.description" label="Description" rows="3" variant="outlined"
-              density="comfortable" class="mb-2" />
+            <v-textarea
+              v-model="newRocket.description"
+              label="Description"
+              rows="3"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+            />
 
-            <v-text-field v-model="newRocket.image_url" label="Image URL" placeholder="https://example.com/rocket.jpg"
-              variant="outlined" density="comfortable" class="mb-2" />
+            <v-text-field
+              v-model="newRocket.image_url"
+              label="Image URL"
+              placeholder="https://example.com/rocket.jpg"
+              variant="outlined"
+              density="comfortable"
+              class="mb-2"
+            />
 
             <v-row dense>
-              <v-col cols="12" sm="6">
-                <v-text-field v-model="newRocket.launch_cost" label="Cost per Launch" placeholder="e.g. 50000000"
-                  variant="outlined" density="comfortable" />
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-text-field
+                  v-model="newRocket.launch_cost"
+                  label="Cost per Launch"
+                  placeholder="e.g. 50000000"
+                  variant="outlined"
+                  density="comfortable"
+                />
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-text-field v-model="countryCodeInput" label="Country Code" placeholder="e.g. USA" variant="outlined"
-                  density="comfortable" />
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-text-field
+                  v-model="countryCodeInput"
+                  label="Country Code"
+                  placeholder="e.g. USA"
+                  variant="outlined"
+                  density="comfortable"
+                />
               </v-col>
             </v-row>
 
-            <v-text-field v-model="newRocket.maiden_flight" label="First Flight Date" type="date" variant="outlined"
-              density="comfortable" />
+            <v-text-field
+              v-model="newRocket.maiden_flight"
+              label="First Flight Date"
+              type="date"
+              variant="outlined"
+              density="comfortable"
+            />
           </v-card-text>
 
           <v-divider />
 
           <v-card-actions class="pa-4">
             <v-spacer />
-            <v-btn variant="plain" @click="showAddDialog = false">
+            <v-btn
+              variant="plain"
+              @click="showAddDialog = false"
+            >
               Cancel
             </v-btn>
-            <v-btn color="primary" variant="elevated" :disabled="!isFormValid" type="submit">
+            <v-btn
+              color="primary"
+              variant="elevated"
+              :disabled="!isFormValid"
+              type="submit"
+            >
               Save Rocket
             </v-btn>
           </v-card-actions>
