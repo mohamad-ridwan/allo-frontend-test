@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="100%" height="100%" fill="none">
+  <rect width="400" height="300" fill="#F1F5F9"/>
+  <rect x="140" y="85" width="120" height="95" rx="12" fill="#E2E8F0" stroke="#CBD5E1" stroke-width="2"/>
+  <circle cx="170" cy="115" r="7" fill="#94A3B8"/>
+  <path d="M148 165l28-26 18 16 22-20 36 30" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="200" y="215" text-anchor="middle" fill="#94A3B8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="500">
+    Gambar tidak tersedia
+  </text>
+</svg>
