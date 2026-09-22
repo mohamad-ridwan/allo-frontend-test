@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type { Rocket } from "@/types/rocket";
-
-const API_BASE_URL = "https://lldev.thespacedevs.com/2.2.0/config/launcher";
+import { rocketService } from "@/services/rocketService";
 
 export const useRocketStore = defineStore("rocket", () => {
   // State
@@ -39,14 +38,7 @@ export const useRocketStore = defineStore("rocket", () => {
     isLoading.value = true;
     error.value = null;
     try {
-      const res = await fetch(
-        `${API_BASE_URL}/?manufacturer__name=SpaceX&mode=detailed&limit=20`,
-      );
-      if (!res.ok) {
-        throw new Error(`Failed to fetch rockets (HTTP ${res.status})`);
-      }
-      const data = await res.json();
-      apiRockets.value = data.results || [];
+      apiRockets.value = await rocketService.getRockets();
     } catch (err: unknown) {
       error.value =
         err instanceof Error ? err.message : "Failed to fetch rockets from API";
@@ -78,13 +70,9 @@ export const useRocketStore = defineStore("rocket", () => {
       return cached;
     }
 
-    // 3. Fetch langsung dari API
+    // 3. Fetch dari API via rocketService
     try {
-      const res = await fetch(`${API_BASE_URL}/${id}/`);
-      if (!res.ok) {
-        throw new Error(`Failed to load rocket details (HTTP ${res.status})`);
-      }
-      const data = await res.json();
+      const data = await rocketService.getRocketById(id);
       selectedRocket.value = data;
       return data;
     } catch (err: unknown) {
