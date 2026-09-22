@@ -1,0 +1,38 @@
+/**
+ * Global CSS Utilities & Helpers
+ * Centralized utility classes for typography, truncation, transitions, and overlays.
+ */
+
+/* Multi-line text truncation */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Card hover elevation & lift effect */
+.rocket-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.rocket-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Hero image gradient overlay */
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+/* Typography line height */
+.line-height-relaxed {
+  line-height: 1.8;
+}

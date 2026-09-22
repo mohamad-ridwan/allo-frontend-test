@@ -153,12 +153,3 @@ const {
   loadData,
 } = useRocketDetail()
 </script>
-
-<style scoped>
-.hero-overlay {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.85) 100%);
-}
-.line-height-relaxed {
-  line-height: 1.8;
-}
-</style>

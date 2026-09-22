@@ -83,20 +83,3 @@ defineProps<{
   rocket: Rocket
 }>()
 </script>
-
-<style scoped>
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.rocket-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.rocket-card:hover {
-  transform: translateY(-4px);
-}
-</style>
