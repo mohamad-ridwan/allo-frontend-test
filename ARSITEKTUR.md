@@ -26,11 +26,11 @@ Aplikasi ini dibangun menggunakan ekosistem modern **Vue 3** dengan menerapkan p
 
 ```mermaid
 graph TD
-    User([Pengguna / Browser]) --> Router[Vue Router / File-Based Routing]
+    User(["Pengguna / Browser"]) --> Router["Vue Router / File-Based Routing"]
     Router --> IndexPage["Page: index.vue (Smart Container)"]
     Router --> DetailPage["Page: [id].vue (Smart Container)"]
 
-    subgraph Composition Layer [Custom Composables]
+    subgraph Composition_Layer ["Composition Layer (Custom Composables)"]
         UseList["useRocketList.ts"]
         UseDetail["useRocketDetail.ts"]
         UseForm["useRocketForm.ts"]
@@ -40,11 +40,11 @@ graph TD
     DetailPage <--> UseDetail
     AddRocketDialog <--> UseForm
 
-    subgraph State Management [Pinia: useRocketStore]
-        StoreAPI[apiRockets: Ref<Rocket[]>]
-        StoreLocal[localRockets: Ref<Rocket[]>]
-        StoreFilter[filterQuery: Ref<string>]
-        StoreSelected[selectedRocket: Ref<Rocket | null>]
+    subgraph State_Management ["State Management (Pinia: useRocketStore)"]
+        StoreAPI["apiRockets: Ref of Rocket[]"]
+        StoreLocal["localRockets: Ref of Rocket[]"]
+        StoreFilter["filterQuery: Ref of string"]
+        StoreSelected["selectedRocket: Ref of Rocket or null"]
         Getters["rockets / filteredRockets (Computed)"]
         Actions["fetchRockets / fetchRocketById / addLocalRocket"]
     end
@@ -56,7 +56,7 @@ graph TD
     UseDetail <--> StoreSelected
     UseForm --> Actions
 
-    subgraph Service Layer [Services & HTTP Client]
+    subgraph Service_Layer ["Service Layer (Services & HTTP Client)"]
         RocketService["rocketService.ts (Domain API Methods)"]
         ApiClient["apiClient.ts (Reusable Fetch Wrapper)"]
     end
@@ -65,20 +65,20 @@ graph TD
     RocketService --> ApiClient
     ApiClient <--> LL2API["Launch Library 2 API (lldev.thespacedevs.com/2.2.0)"]
 
-    subgraph Presentational Components [Dumb / Reusable Components]
-        IndexPage --> RocketCard[RocketCard.vue]
-        IndexPage --> RocketFilter[RocketFilter.vue]
-        IndexPage --> AddRocketDialog[AddRocketDialog.vue]
-        DetailPage --> RocketSpecsCard[RocketSpecsCard.vue]
-        DetailPage --> RocketSpecsTable[RocketSpecsTable.vue]
-        IndexPage & DetailPage --> StateError[StateError.vue]
-        IndexPage & DetailPage --> StateEmpty[StateEmpty.vue]
+    subgraph Presentational_Components ["Presentational Components (Dumb / Reusable Components)"]
+        IndexPage --> RocketCard["RocketCard.vue"]
+        IndexPage --> RocketFilter["RocketFilter.vue"]
+        IndexPage --> AddRocketDialog["AddRocketDialog.vue"]
+        DetailPage --> RocketSpecsCard["RocketSpecsCard.vue"]
+        DetailPage --> RocketSpecsTable["RocketSpecsTable.vue"]
+        IndexPage & DetailPage --> StateError["StateError.vue"]
+        IndexPage & DetailPage --> StateEmpty["StateEmpty.vue"]
     end
 
-    subgraph Utilities & Styles
+    subgraph Utilities_and_Styles ["Utilities & Styles"]
         RocketCard & DetailPage --> Formatters["formatters.ts (formatCost, formatDate)"]
         RocketCard & DetailPage --> Assets["assets/images/placeholders/rocket-placeholder.svg"]
-        AllComponents --> GlobalStyles["styles/utilities.scss (line-clamp, hover, hero-overlay)"]
+        AllComponents["Semua Komponen"] --> GlobalStyles["styles/utilities.scss (line-clamp, hover, hero-overlay)"]
     end
 ```
 
