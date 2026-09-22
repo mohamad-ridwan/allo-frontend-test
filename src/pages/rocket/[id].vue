@@ -140,34 +140,18 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-import { useRocketStore } from '@/stores/rocket'
+import { useRocketDetail } from '@/composables/useRocketDetail'
 import { DEFAULT_PLACEHOLDER_IMAGE } from '@/utils/formatters'
 import StateError from '@/components/common/StateError.vue'
 import StateEmpty from '@/components/common/StateEmpty.vue'
 import RocketSpecsCard from '@/components/rocket/RocketSpecsCard.vue'
 import RocketSpecsTable from '@/components/rocket/RocketSpecsTable.vue'
 
-const route = useRoute()
-const store = useRocketStore()
-
-const rocketId = computed(() => {
-  const param = 'id' in route.params ? route.params.id : undefined
-  return Array.isArray(param) ? param[0] : param
-})
-
-const rocket = computed(() => store.selectedRocket)
-
-function loadData() {
-  if (rocketId.value) {
-    store.fetchRocketById(rocketId.value)
-  }
-}
-
-onMounted(() => {
-  loadData()
-})
+const {
+  store,
+  rocket,
+  loadData,
+} = useRocketDetail()
 </script>
 
 <style scoped>

@@ -35,7 +35,7 @@
           prepend-icon="mdi-plus"
           size="large"
           elevation="2"
-          @click="showAddDialog = true"
+          @click="openAddDialog"
         >
           Add Rocket
         </v-btn>
@@ -109,25 +109,17 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { useRocketStore } from '@/stores/rocket'
-import type { Rocket } from '@/types/rocket'
+import { useRocketList } from '@/composables/useRocketList'
 import RocketCard from '@/components/rocket/RocketCard.vue'
 import RocketFilter from '@/components/rocket/RocketFilter.vue'
 import AddRocketDialog from '@/components/rocket/AddRocketDialog.vue'
 import StateError from '@/components/common/StateError.vue'
 import StateEmpty from '@/components/common/StateEmpty.vue'
 
-const store = useRocketStore()
-const showAddDialog = ref(false)
-
-onMounted(() => {
-  if (store.apiRockets.length === 0) {
-    store.fetchRockets()
-  }
-})
-
-function handleCreateRocket(payload: Omit<Rocket, 'id' | 'isLocal'>) {
-  store.addLocalRocket(payload)
-}
+const {
+  store,
+  showAddDialog,
+  openAddDialog,
+  handleCreateRocket,
+} = useRocketList()
 </script>
