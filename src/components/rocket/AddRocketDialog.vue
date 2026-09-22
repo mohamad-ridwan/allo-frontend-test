@@ -20,7 +20,6 @@
       </v-toolbar>
 
       <v-form
-        ref="formRef"
         v-model="isFormValid"
         @submit.prevent="handleSubmit"
       >
